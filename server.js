@@ -83,13 +83,19 @@ app.patch("/updateBook/:bid", async (req, res) => {
     var newBname = req.body.newBookName;
     var newGenre = req.body.newGenre;
     try {
-        connection.query("UPDATE book SET book_name = '"+newBname+"',genre = '"+newGenre+"' WHERE book_id = '"+book_id+"'", (err, results, fields) => {
-            if (err) {
-                console.log(err);
-                return res.status(400).send();
-            }
-            res.status(200).json({ message: "Book updated successfully!"});
-        })
+        if(!isNaN(Number(book_id))){
+          connection.query("UPDATE book SET book_name = '"+newBname+"',genre = '"+newGenre+"' WHERE book_id = '"+book_id+"'",
+            (err, results, fields) => {
+                if (err) {
+                    console.log(err);
+                    return res.status(400).send();
+                }
+                res.status(200).json({ message: "Book updated successfully!"});
+            })  
+        }
+        else{
+            res.status(400).json({ err: "Something wrong!!"})
+        }
     } catch(err) {
         console.log(err);
         return res.status(500).send();
@@ -101,13 +107,18 @@ app.patch("/updateAuth/:auth_id", async (req, res) => {
     var newAuthname = req.body.newAuthName;
     var newGender = req.body.newGender;
     try {
-        connection.query("UPDATE author SET auth_name = '"+newAuthname+"',auth_gender = '"+newGender+"' WHERE auth_id = '"+auth_id+"'", (err, results, fields) => {
-            if (err) {
-                console.log(err);
-                return res.status(400).send();
-            }
-            res.status(200).json({ message: "Author updated successfully!"});
-        })
+        if(!isNaN(Number(auth_id))){
+            connection.query("UPDATE author SET auth_name = '"+newAuthname+"',auth_gender = '"+newGender+"' WHERE auth_id = '"+auth_id+"'", (err, results, fields) => {
+                if (err) {
+                    console.log(err);
+                    return res.status(400).send();
+                }
+                res.status(200).json({ message: "Author updated successfully!"});
+            })
+        }
+        else{
+            res.status(400).json({ err: "Something wrong!!"})
+        }
     } catch(err) {
         console.log(err);
         return res.status(500).send();
@@ -118,16 +129,21 @@ app.delete("/deleteBook/:bid", async (req, res) => {
     var book_id = req.params.bid;
 
     try {
-        connection.query("DELETE FROM book WHERE book_id = '"+book_id+"'", (err, results, fields) => {
-            if (err) {
-                console.log(err);
-                return res.status(400).send();
-            }
-            if (results.affectedRows === 0) {
-                return res.status(404).json({ message: "Error. Try Again"});
-            }
-            return res.status(200).json({ message: "Book deleted successfully!"});
-        })
+        if(!isNaN(Number(book_id))){
+            connection.query("DELETE FROM book WHERE book_id = '"+book_id+"'", (err, results, fields) => {
+                if (err) {
+                    console.log(err);
+                    return res.status(400).send();
+                }
+                if (results.affectedRows === 0) {
+                    return res.status(404).json({ message: "Error. Try Again"});
+                }
+                return res.status(200).json({ message: "Book deleted successfully!"});
+            })
+        }
+        else{
+            res.status(400).json({ err: "Something wrong!!"})
+        }
     } catch(err) {
         console.log(err);
         return res.status(500).send();
@@ -138,16 +154,21 @@ app.delete("/deleteAuth/:auth_id", async (req, res) => {
     var auth_id = req.params.auth_id;
 
     try {
-        connection.query("DELETE FROM author WHERE auth_id = '"+auth_id+"'", (err, results, fields) => {
-            if (err) {
-                console.log(err);
-                return res.status(400).send();
-            }
-            if (results.affectedRows === 0) {
-                return res.status(404).json({ message: "Error. Try Again"});
-            }
-            return res.status(200).json({ message: "Author deleted successfully!"});
-        })
+        if(!isNaN(Number(auth_id))){
+            connection.query("DELETE FROM author WHERE auth_id = '"+auth_id+"'", (err, results, fields) => {
+                if (err) {
+                    console.log(err);
+                    return res.status(400).send();
+                }
+                if (results.affectedRows === 0) {
+                    return res.status(404).json({ message: "Error. Try Again"});
+                }
+                return res.status(200).json({ message: "Author deleted successfully!"});
+            })
+        }
+        else{
+            res.status(400).json({ err: "Something wrong!!"})
+        }
     } catch(err) {
         console.log(err);
         return res.status(500).send();
